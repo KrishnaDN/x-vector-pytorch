@@ -34,7 +34,7 @@ class X_vector(nn.Module):
         tdnn5_out = self.tdnn5(tdnn4_out)
         ### Stat Pool
         mean = torch.mean(tdnn5_out,1)
-        std = torch.std(tdnn5_out,1)
+        std = torch.var(tdnn5_out,1)
         stat_pooling = torch.cat((mean,std),1)
         segment6_out = self.segment6(stat_pooling)
         x_vec = self.segment7(segment6_out)

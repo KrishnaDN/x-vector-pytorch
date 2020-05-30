@@ -70,7 +70,7 @@ class TDNN(nn.Module):
 
         # N, output_dim*context_size, new_t = x.shape
         x = x.transpose(1,2)
-        x = self.kernel(x)
+        x = self.kernel(x.float())
         x = self.nonlinearity(x)
         
         if self.dropout_p:
