@@ -60,6 +60,18 @@ def load_data(filepath,sr=16000, min_dur_sec=4,win_length=400,hop_length=160, n_
     
 
 
+def load_npy_data(filepath,spec_len=400,mode='train'):
+    mag_T = np.load(filepath)
+    if mode=='train':
+        randtime = np.random.randint(0, mag_T.shape[1]-spec_len)
+        spec_mag = mag_T[:, randtime:randtime+spec_len]
+    else:
+        spec_mag = mag_T
+    return spec_mag
+    
+    
+
+
 
 def speech_collate(batch):
     targets = []

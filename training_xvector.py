@@ -11,7 +11,7 @@ Created on Sat May 30 20:22:26 2020
 import torch
 import numpy as np
 from torch.utils.data import DataLoader   
-from SpeechDataGenerator import SpeechDataGenerator
+from SpeechDataGenerator_precomp_feats import SpeechDataGenerator_precomp_features
 import torch.nn as nn
 import os
 import numpy as np
@@ -26,27 +26,27 @@ torch.multiprocessing.set_sharing_strategy('file_system')
 
 ########## Argument parser
 parser = argparse.ArgumentParser(add_help=False)
-parser.add_argument('-training_filepath',type=str,default='meta/training.txt')
-parser.add_argument('-testing_filepath',type=str, default='meta/testing.txt')
-parser.add_argument('-validation_filepath',type=str, default='meta/validation.txt')
+parser.add_argument('-training_filepath',type=str,default='meta/training_feat.txt')
+parser.add_argument('-testing_filepath',type=str, default='meta/testing_feat.txt')
+parser.add_argument('-validation_filepath',type=str, default='meta/validation_feat.txt')
 
 parser.add_argument('-input_dim', action="store_true", default=257)
 parser.add_argument('-num_classes', action="store_true", default=8)
 parser.add_argument('-lamda_val', action="store_true", default=0.1)
-parser.add_argument('-batch_size', action="store_true", default=128)
+parser.add_argument('-batch_size', action="store_true", default=256)
 parser.add_argument('-use_gpu', action="store_true", default=True)
 parser.add_argument('-num_epochs', action="store_true", default=100)
 args = parser.parse_args()
 
 ### Data related
-dataset_train = SpeechDataGenerator(manifest=args.training_filepath,mode='train')
+dataset_train = SpeechDataGenerator_precomp_features(manifest=args.training_filepath,mode='train')
 dataloader_train = DataLoader(dataset_train, batch_size=args.batch_size,shuffle=True,collate_fn=speech_collate) 
 
-dataset_val = SpeechDataGenerator(manifest=args.validation_filepath,mode='train')
+dataset_val = SpeechDataGenerator_precomp_features(manifest=args.validation_filepath,mode='train')
 dataloader_val = DataLoader(dataset_train, batch_size=args.batch_size,shuffle=True,collate_fn=speech_collate) 
 
 
-dataset_test = SpeechDataGenerator(manifest=args.testing_filepath,mode='test')
+dataset_test = SpeechDataGenerator_precomp_features(manifest=args.testing_filepath,mode='test')
 dataloader_test = DataLoader(dataset_test, batch_size=args.batch_size,shuffle=True,collate_fn=speech_collate) 
 
 ## Model related
@@ -64,6 +64,7 @@ def train(dataloader_train,epoch):
     full_gts=[]
     model.train()
     for i_batch, sample_batched in enumerate(dataloader_train):
+    
         features = torch.from_numpy(np.asarray([torch_tensor.numpy().T for torch_tensor in sample_batched[0]])).float()
         labels = torch.from_numpy(np.asarray([torch_tensor[0].numpy() for torch_tensor in sample_batched[1]]))
         features, labels = features.to(device),labels.to(device)

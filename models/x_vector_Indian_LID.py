@@ -33,6 +33,7 @@ class X_vector(nn.Module):
         tdnn4_out = self.tdnn4(tdnn3_out)
         tdnn5_out = self.tdnn5(tdnn4_out)
         ### Stat Pool
+        
         mean = torch.mean(tdnn5_out,1)
         std = torch.var(tdnn5_out,1)
         stat_pooling = torch.cat((mean,std),1)
