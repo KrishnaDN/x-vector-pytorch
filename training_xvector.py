@@ -77,8 +77,8 @@ def train(dataloader_train,epoch):
         optimizer.step()
         train_loss_list.append(loss.item())
         #train_acc_list.append(accuracy)
-        if i_batch%10==0:
-            print('Loss {} after {} iteration'.format(np.mean(np.asarray(train_loss_list)),i_batch))
+        #if i_batch%10==0:
+        #    print('Loss {} after {} iteration'.format(np.mean(np.asarray(train_loss_list)),i_batch))
         
         predictions = np.argmax(pred_logits.detach().cpu().numpy(),axis=1)
         for pred in predictions:
@@ -117,9 +117,6 @@ def validation(dataloader_val,epoch):
         mean_loss = np.mean(np.asarray(val_loss_list))
         print('Total vlidation loss {} and Validation accuracy {} after {} epochs'.format(mean_loss,mean_acc,epoch))
         
-        
-        mean_loss = np.mean(np.asarray(val_loss_list))
-        print('Total Validation loss {} after {} epochs'.format(mean_loss,epoch))
         model_save_path = os.path.join('save_model', 'best_check_point_'+str(epoch)+'_'+str(mean_loss))
         state_dict = {'model': model.state_dict(),'optimizer': optimizer.state_dict(),'epoch': epoch}
         torch.save(state_dict, model_save_path)
