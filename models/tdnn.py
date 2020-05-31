@@ -17,7 +17,7 @@ class TDNN(nn.Module):
                     context_size=5,
                     stride=1,
                     dilation=1,
-                    batch_norm=True,
+                    batch_norm=False,
                     dropout_p=0.2
                 ):
         '''
@@ -55,7 +55,7 @@ class TDNN(nn.Module):
         input: size (batch, seq_len, input_features)
         outpu: size (batch, new_seq_len, output_features)
         '''
-
+        
         _, _, d = x.shape
         assert (d == self.input_dim), 'Input dimension was wrong. Expected ({}), got ({})'.format(self.input_dim, d)
         x = x.unsqueeze(1)

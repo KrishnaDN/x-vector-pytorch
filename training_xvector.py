@@ -30,7 +30,7 @@ parser.add_argument('-training_filepath',type=str,default='meta/training.txt')
 parser.add_argument('-testing_filepath',type=str, default='meta/testing.txt')
 parser.add_argument('-validation_filepath',type=str, default='meta/validation.txt')
 
-parser.add_argument('-input_dim', action="store_true", default=40)
+parser.add_argument('-input_dim', action="store_true", default=257)
 parser.add_argument('-num_classes', action="store_true", default=8)
 parser.add_argument('-lamda_val', action="store_true", default=0.1)
 parser.add_argument('-batch_size', action="store_true", default=128)
@@ -53,7 +53,7 @@ dataloader_test = DataLoader(dataset_test, batch_size=args.batch_size,shuffle=Tr
 use_cuda = torch.cuda.is_available()
 device = torch.device("cuda" if use_cuda else "cpu")
 model = X_vector(args.input_dim, args.num_classes).to(device)
-optimizer = optim.Adam(model.parameters(), lr=0.01, weight_decay=0.0, betas=(0.9, 0.98), eps=1e-9)
+optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=0.0, betas=(0.9, 0.98), eps=1e-9)
 loss_fun = nn.CrossEntropyLoss()
 
 
