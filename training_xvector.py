@@ -98,7 +98,7 @@ def validation(dataloader_val,epoch):
         val_loss_list=[]
         full_preds=[]
         full_gts=[]
-        for i_batch, sample_batched in enumerate(dataloader_train):
+        for i_batch, sample_batched in enumerate(dataloader_val):
             features = torch.from_numpy(np.asarray([torch_tensor.numpy().T for torch_tensor in sample_batched[0]])).float()
             labels = torch.from_numpy(np.asarray([torch_tensor[0].numpy() for torch_tensor in sample_batched[1]]))
             features, labels = features.to(device),labels.to(device)
