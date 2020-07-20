@@ -11,7 +11,7 @@ Created on Sat May 30 20:22:26 2020
 import torch
 import numpy as np
 from torch.utils.data import DataLoader   
-from SpeechDataGenerator_precomp_feats import SpeechDataGenerator_precomp_features
+from SpeechDataGenerator import SpeechDataGenerator
 import torch.nn as nn
 import os
 import numpy as np
@@ -39,14 +39,14 @@ parser.add_argument('-num_epochs', action="store_true", default=100)
 args = parser.parse_args()
 
 ### Data related
-dataset_train = SpeechDataGenerator_precomp_features(manifest=args.training_filepath,mode='train')
+dataset_train = SpeechDataGenerator(manifest=args.training_filepath,mode='train')
 dataloader_train = DataLoader(dataset_train, batch_size=args.batch_size,shuffle=True,collate_fn=speech_collate) 
 
-dataset_val = SpeechDataGenerator_precomp_features(manifest=args.validation_filepath,mode='train')
+dataset_val = SpeechDataGenerator(manifest=args.validation_filepath,mode='train')
 dataloader_val = DataLoader(dataset_train, batch_size=args.batch_size,shuffle=True,collate_fn=speech_collate) 
 
 
-dataset_test = SpeechDataGenerator_precomp_features(manifest=args.testing_filepath,mode='test')
+dataset_test = SpeechDataGenerator(manifest=args.testing_filepath,mode='test')
 dataloader_test = DataLoader(dataset_test, batch_size=args.batch_size,shuffle=True,collate_fn=speech_collate) 
 
 ## Model related
